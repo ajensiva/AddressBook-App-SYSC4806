@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="">
+<head>
+    <title>AddressBook</title>
+</head>
+<body>
+<h1>AddressBook [[${addressBook.id}]]</h1>
+<ul>
+    <li th:each="buddy : ${addressBook.buddies}">
+        [[${buddy.name}]] - [[${buddy.number}]]
+    </li>
+</ul>
+</body>
+</html>
