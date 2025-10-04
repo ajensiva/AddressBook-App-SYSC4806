@@ -39,4 +39,7 @@ public class BuddyInfo {
         this.number = number;
     }
 
+    public void setId(long buddyId) {
+        this.id = buddyId;
+    }
 }

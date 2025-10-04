@@ -22,6 +22,7 @@ public class AddressBook {
     public AddressBook() {}
 
     public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
     public List<BuddyInfo> getBuddies() { return buddies; }
 
     public void addBuddy(BuddyInfo b) {
