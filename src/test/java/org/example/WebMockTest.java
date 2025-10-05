@@ -48,7 +48,7 @@ public class WebMockTest {
     @Test
     public void addBuddyTest() throws Exception {
         long addressBookId = 1L;
-        BuddyInfo buddy = new BuddyInfo("Alice", "555-1234");
+        BuddyInfo buddy = new BuddyInfo("Alice", "555-1234", "Ottawa, ON");
 
         AddressBook ab = new AddressBook();
         ab.setId(addressBookId);
@@ -71,7 +71,7 @@ public class WebMockTest {
         long addressBookId = 1L;
         long buddyId = 100L;
 
-        BuddyInfo buddy = new BuddyInfo("Alice", "555-1234");
+        BuddyInfo buddy = new BuddyInfo("Alice", "555-1234", "Ottawa, ON");
         buddy.setId(buddyId);
 
         AddressBook ab = new AddressBook();
