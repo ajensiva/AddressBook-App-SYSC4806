@@ -67,7 +67,7 @@ public class WebMockTest {
     }
 
     @Test
-    public void removeBuddyFromAddressBook_returnsUpdatedAddressBook() throws Exception {
+    public void removeBuddyTest() throws Exception {
         long addressBookId = 1L;
         long buddyId = 100L;
 
