@@ -1,72 +1,71 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="">
 <head>
-    <meta charset="UTF-8" />
+    <meta charset="UTF-8">
     <title>AddressBook App</title>
     <style>
         body { font-family: Arial, sans-serif; margin: 2rem; }
         h1, h2 { color: #333; }
-        form { margin-bottom: 1rem; }
+        section { margin-bottom: 2rem; }
+        ul { list-style: none; padding: 0; }
+        li { margin: 4px 0; }
         label { display: inline-block; width: 120px; }
-        input { margin-bottom: 0.5rem; }
-        hr { margin: 2rem 0; }
+        input { margin-bottom: 6px; }
     </style>
 </head>
 <body>
 <h1>AddressBook Application</h1>
 
-<!-- 🟢 Section 1: Create new AddressBook -->
 <section>
     <h2>Create a New AddressBook</h2>
-    <form th:action="@{/gui/addressbooks}" method="post">
+    <form th:action="@{/gui/addressbooks}" method="post" id="createBookForm">
         <label for="name">Name:</label>
-        <input type="text" id="name" name="name" required />
-        <button type="submit">Create</button>
+        <input type="text" id="name" name="name" required>
+        <button type="submit" id="createBookBtn">Create</button>
     </form>
 </section>
 
-<hr/>
-
-<!-- 🟣 Section 2: List all AddressBooks -->
 <section>
     <h2>All AddressBooks</h2>
-    <ul>
+    <ul id="addressBookList">
         <li th:each="book : ${addressBooks}">
             <a th:href="@{'/gui/addressbooks/' + ${book.id}}">AddressBook [[${book.id}]]</a>
         </li>
     </ul>
 </section>
 
-<hr/>
-
-<!-- 🟡 Section 3: View one AddressBook and its buddies -->
 <section th:if="${addressBook != null}">
     <h2>AddressBook [[${addressBook.id}]]</h2>
-
-    <ul>
+    <ul id="buddyList">
         <li th:each="buddy : ${addressBook.buddies}">
-            [[${buddy.name}]] — [[${buddy.number}]] (<span th:text="${buddy.address}"></span>)
+            [[${buddy.name}]] — [[${buddy.number}]] <span th:text="${buddy.address}"></span>
         </li>
     </ul>
-
-    <!-- 🧍 Section 4: Add a Buddy -->
-    <h3>Add a Buddy</h3>
-    <form th:action="@{'/gui/addressbooks/' + ${addressBook.id} + '/buddies'}" method="post">
-        <label for="bname">Name:</label>
-        <input type="text" id="bname" name="name" required /><br />
-
-        <label for="bnum">Phone Number:</label>
-        <input type="text" id="bnum" name="number" required /><br />
-
-        <label for="baddr">Address:</label>
-        <input type="text" id="baddr" name="address" /><br />
-
-        <button type="submit">Add Buddy</button>
+    <form th:action="@{'/gui/addressbooks/' + ${addressBook.id} + '/buddies'}" method="post" id="addBuddyForm">
+        <label for="buddyName">Name:</label>
+        <input type="text" id="buddyName" name="name" required><br>
+        <label for="buddyNumber">Number:</label>
+        <input type="text" id="buddyNumber" name="number" required><br>
+        <label for="buddyAddress">Address:</label>
+        <input type="text" id="buddyAddress" name="address"><br>
+        <button type="submit" id="addBuddyBtn">Add Buddy</button>
     </form>
 </section>
 
-<hr/>
+<section th:if="${addressBook == null}">
+    <h2>AddressBook <span id="currentBookId">None</span></h2>
+    <ul id="buddyList"></ul>
+    <form id="addBuddyFormJs">
+        <label for="buddyNameJs">Name:</label>
+        <input type="text" id="buddyNameJs"><br>
+        <label for="buddyNumberJs">Number:</label>
+        <input type="text" id="buddyNumberJs"><br>
+        <label for="buddyAddressJs">Address:</label>
+        <input type="text" id="buddyAddressJs"><br>
+        <button type="button" id="addBuddyBtnJs">Add Buddy</button>
+    </form>
+</section>
 
-<a th:href="@{/gui/addressbooks}">Reload All AddressBooks</a>
+<script src="/js/main.js"></script>
 </body>
 </html>

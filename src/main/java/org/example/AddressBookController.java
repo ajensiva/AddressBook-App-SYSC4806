@@ -14,6 +14,11 @@ public class AddressBookController {
         this.repo = repo;
     }
 
+    @GetMapping
+    public Iterable<AddressBook> getAllAddressBooks() {
+        return repo.findAll();
+    }
+
     @PostMapping
     public AddressBook createAddressBook() {
         AddressBook ab = new AddressBook();
