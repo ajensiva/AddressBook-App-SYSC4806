@@ -52,6 +52,6 @@ public class GuiController {
         ab.addBuddy(buddy);
         repo.save(ab);
 
-        return "redirect:/gui/addressbooks/" + id;
+        return "redirect:/gui/addressbooks";
     }
 }
