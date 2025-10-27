@@ -20,8 +20,8 @@ public class AddressBookController {
     }
 
     @PostMapping
-    public AddressBook createAddressBook() {
-        AddressBook ab = new AddressBook();
+    public AddressBook createAddressBook(@RequestBody(required = false) AddressBook newBook) {
+        AddressBook ab = newBook != null ? newBook : new AddressBook();
         return repo.save(ab);
     }
 
@@ -46,11 +46,7 @@ public class AddressBookController {
 
     @GetMapping("/")
     public RedirectView redirectToGui() {
-        AddressBook ab = StreamSupport.stream(repo.findAll().spliterator(), false)
-                .findFirst()
-                .orElseGet(this::createAddressBook);
-
-        return new RedirectView("/gui/addressbooks/" + ab.getId());
+        return new RedirectView("/gui/addressbooks");
     }
 }
 

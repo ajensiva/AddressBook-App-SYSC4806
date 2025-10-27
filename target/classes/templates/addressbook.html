@@ -29,16 +29,19 @@
     <h2>All AddressBooks</h2>
     <ul id="addressBookList">
         <li th:each="book : ${addressBooks}">
-            <a th:href="@{'/gui/addressbooks/' + ${book.id}}">AddressBook [[${book.id}]]</a>
+            <a th:href="@{'/gui/addressbooks/' + ${book.id}}">[[${book.name}]]</a>
         </li>
     </ul>
 </section>
 
 <section th:if="${addressBook != null}">
-    <h2>AddressBook [[${addressBook.id}]]</h2>
+    <h2>
+        AddressBook <span id="currentBookName">[[${addressBook.name}]]</span>
+    </h2>
+    <div id="currentBook" th:attr="data-id=${addressBook.id}"></div>
     <ul id="buddyList">
         <li th:each="buddy : ${addressBook.buddies}">
-            [[${buddy.name}]] — [[${buddy.number}]] <span th:text="${buddy.address}"></span>
+            [[${buddy.name}]] — [[${buddy.number}]] — [[${buddy.address}]] <span th:text="${buddy.address}"></span>
         </li>
     </ul>
     <form th:action="@{'/gui/addressbooks/' + ${addressBook.id} + '/buddies'}" method="post" id="addBuddyForm">
@@ -53,7 +56,10 @@
 </section>
 
 <section th:if="${addressBook == null}">
-    <h2>AddressBook <span id="currentBookId">None</span></h2>
+    <h2>
+        AddressBook <span id="currentBookName">None</span>
+    </h2>
+    <div id="currentBook" data-id=""></div>
     <ul id="buddyList"></ul>
     <form id="addBuddyFormJs">
         <label for="buddyNameJs">Name:</label>

@@ -19,7 +19,7 @@ function loadAddressBooks() {
             data.forEach(book => {
                 const li = document.createElement("li");
                 const btn = document.createElement("button");
-                btn.textContent = `AddressBook ${book.id}`;
+                btn.textContent = book.name || `AddressBook ${book.id}`;
                 btn.onclick = () => viewAddressBook(book.id);
                 li.appendChild(btn);
                 list.appendChild(li);
@@ -28,8 +28,15 @@ function loadAddressBooks() {
 }
 
 function createAddressBook(event) {
-    event.preventDefault(); // prevent form reload
-    fetch("/api/addressbooks", { method: "POST" })
+    event.preventDefault();
+    const name = document.getElementById("name").value.trim();
+    if (!name) return;
+
+    fetch("/api/addressbooks", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name })
+    })
         .then(res => res.json())
         .then(book => {
             loadAddressBooks();
@@ -41,35 +48,36 @@ function viewAddressBook(id) {
     fetch(`/api/addressbooks/${id}`)
         .then(res => res.json())
         .then(book => {
-            const idDisplay = document.getElementById("currentBookId");
+            const nameDisplay = document.getElementById("currentBookName");
+            const currentBook = document.getElementById("currentBook");
             const buddyList = document.getElementById("buddyList");
-            if (!buddyList) return;
+            if (!buddyList || !currentBook || !nameDisplay) return;
 
-            idDisplay.textContent = book.id;
+            nameDisplay.textContent = book.name || `AddressBook ${book.id}`;
+            currentBook.dataset.id = book.id;
+
             buddyList.innerHTML = "";
-
-            book.buddies.forEach(buddy => {
+            (book.buddies || []).forEach(buddy => {
                 const li = document.createElement("li");
-                li.textContent = `${buddy.name} — ${buddy.number}`;
+                li.textContent = `${buddy.name} — ${buddy.number} — ${buddy.address}`;
                 buddyList.appendChild(li);
             });
         });
 }
 
 function addBuddy() {
-    const id = document.getElementById("currentBookId").textContent;
-    if (id === "None") return;
+    const currentBook = document.getElementById("currentBook");
+    const id = currentBook?.dataset.id;
+    if (!id) return;
 
     const name = document.getElementById("buddyNameJs").value;
     const number = document.getElementById("buddyNumberJs").value;
     const address = document.getElementById("buddyAddressJs").value;
 
-    const buddy = { name, number, address };
-
     fetch(`/api/addressbooks/${id}/buddies`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(buddy)
+        body: JSON.stringify({ name, number, address })
     })
         .then(res => res.json())
         .then(() => viewAddressBook(id));
